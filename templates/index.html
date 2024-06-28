@@ -1,0 +1,50 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    OPT-web
+{% endblock %}
+
+{% block content %}
+    <div class="features">
+        <h1>Ан-24РВ</h1>
+        <form action="{% url 'home' %}" method="post">
+            {% csrf_token %}
+            {% for field in flaps_settings_form %}
+                {{ field }}
+            {% endfor %}
+            <br>
+            {# ICAO Form without labels #}
+            {% for field in icao_form %}
+                {{ field }}
+            {% endfor %}
+            <br>
+            <input type="text" name="to_heading" value="{{ to_heading_value }}" placeholder="Курс взлета" pattern="[0-9]+" title="Введите только цифры" required oninput="this.value=this.value.replace(/[^\d]/,'')">
+            <input type="text" name="tora" value="{{ tora_value }}" placeholder="РДР" pattern="[0-9]+" title="Введите только цифры" oninput="this.value=this.value.replace(/[^\d]/,'')">
+            <input type="text" name="asda" value="{{ asda_value }}" placeholder="РДПВ" pattern="[0-9]+" title="Введите только цифры" oninput="this.value=this.value.replace(/[^\d]/,'')">
+            <input type="text" name="rw_slope" value="{{ rw_slope_value }}" placeholder="Уклон ВПП" oninput="this.value=this.value.replace(/[^\d-,.]/,'')">
+            <br>
+            <input type="text" name="qnh" value="{{ qnh_value }}" placeholder="QNH" pattern="[0-9]+" title="Введите только цифры" oninput="this.value=this.value.replace(/[^\d]/,'')">
+            <input type="text" name="temperature" value="{{ temperature_value }}" placeholder="Температура" oninput="this.value=this.value.replace(/[^\d-]/,'')">
+            <br>
+            <input type="text" name="wind_direction" value="{{ wind_direction_value }}" placeholder="Направление ветра" pattern="[0-9]+" title="Введите только цифры" oninput="this.value=this.value.replace(/[^\d]/,'')">
+            <input type="text" name="wind_velocity" value="{{ wind_velocity_value }}" placeholder="Скорость ветра" pattern="[0-9]+" title="Введите только цифры" oninput="this.value=this.value.replace(/[^\d]/,'')">
+            <br>
+            <button type="submit">Submit</button>
+        </form>
+
+        {% if airport_data %}
+            <div>
+                <h2>Результат запроса</h2>
+                <p>Аэропорт: {{ airport_data.name }}</p>
+                <p>Город: {{ airport_data.city }}</p>
+                <p>Давление QNH: {% if qnh_value != '' %}{{ qnh_value }}{% else %}1013{% endif %}</p>
+                <p>Температура: {% if temperature_value != '' %}{{ temperature_value }}{% else %}15{% endif %}</p>
+                <p>Встречная состовляющая ветра: {{ headwind_velocity_value }}</p>
+                <p>Скорректированная РДР: {{ tora_corrected }}</p>
+                <p>Скорректированная РДПВ: {{ asda_corrected }}</p>
+                <p>Барометрическая высота: {{airport_data.pressure_altitude}}м</p>
+                <h3>MTOW: {{ mtow_value }} кг</h3>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'layout.html'%}
+
+{% block title %}
+    OPT-web - Planes
+{% endblock %}
+
+{% block content %}
+    <div class="features">
+        <h1>Центровки и веса</h1>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Тип ВС</th>
+                    <th scope="col">Бортовой номер</th>
+                    <th scope="col">Масса путого ВС</th>
+                    <th scope="col">Центровка пустого ВС</th>
+                    <th scope="col">MTOW(т) ИВПП</th>
+                    <th scope="col">MTOW(т) ГВПП</th>
+                </tr>
+            </thead>
+            <tbody>
+                {%for i in data%}
+                <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{i.type_acft}}</td>
+                    <td>{{i.acft_id}}</td>
+                    <td>{{i.emty_w}}</td>
+                    <td>{{i.emty_cg}}</td>
+                    <td>{{i.mtow_ivpp}}</td>
+                    <td>{{i.mtow_gvpp}}</td>
+                {%endfor%}
+                </tr>
+            </tbody>
+        </table>
+    </div>
+{%endblock%}
